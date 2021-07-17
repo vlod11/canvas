@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CanvasGridComponent } from './canvas-grid/canvas-grid.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CanvasGridComponent
   ],
   imports: [
     BrowserModule,
