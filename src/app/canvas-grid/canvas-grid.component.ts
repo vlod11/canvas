@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Konva from 'konva';
 import { ShapeService } from 'src/app/core/services/shape.service';
 import { TextNodeService } from 'src/app/core/services/text-node.service';
+import { CanvasElement } from 'src/app/models/canvas-elements';
 
 @Component({
   selector: 'app-canvas-grid',
@@ -10,7 +11,22 @@ import { TextNodeService } from 'src/app/core/services/text-node.service';
 })
 export class CanvasGridComponent implements OnInit {
 
-  shapes: any = [];
+  shapes: any[] = [];
+
+  selectedMenuItem: any;
+
+  menuItems: any[] = [
+    {
+      name: "Draw",
+      isSelected: true
+    },
+    {
+      name: "Elements",
+      isSelected: false
+    }
+  ];
+  selectedShape: any;
+
   stage!: Konva.Stage;
   layer!: Konva.Layer;
   selectedButton: any = {
@@ -21,12 +37,15 @@ export class CanvasGridComponent implements OnInit {
     'erase': false,
     'text': false
   }
+  properties: boolean = false;
   erase: boolean = false;
   transformers: Konva.Transformer[] = [];
   selectionRectangle: Konva.Rect = new Konva.Rect({
     fill: 'rgba(0,0,255,0.5)',
     visible: false,
-  });;
+  });
+  transformer = new Konva.Transformer();
+
 
   constructor(
     private shapeService: ShapeService,
@@ -45,17 +64,21 @@ export class CanvasGridComponent implements OnInit {
     this.stage.add(this.layer);
     this.addLineListeners();
 
-    this.layer.add(this.selectionRectangle);
+    this.addTransformer();
+  }
+
+  setSelectedMenuItem(item: any) {
+    this.selectedMenuItem = item;
+  }
+
+  setSelection(type: string) {
+    this.selectedButton[type] = true;
   }
 
   clearSelection() {
     Object.keys(this.selectedButton).forEach(key => {
       this.selectedButton[key] = false;
     })
-  }
-
-  setSelection(type: string) {
-    this.selectedButton[type] = true;
   }
 
   addShape(type: string) {
@@ -72,6 +95,8 @@ export class CanvasGridComponent implements OnInit {
     }
     else if (type == 'text') {
       this.addText();
+    } else if (type == 'image') {
+      this.addImage();
     }
   }
 
@@ -86,7 +111,15 @@ export class CanvasGridComponent implements OnInit {
     this.shapes.push(circle);
     this.layer.add(circle);
     this.stage.add(this.layer);
-    this.addTransformerListeners()
+    this.addTransformerListeners(circle);
+  }
+
+  addImage() {
+    const image = this.shapeService.image();
+    this.shapes.push(image);
+    this.layer.add(image);
+    this.stage.add(this.layer);
+    this.addTransformerListeners(image);
   }
 
   addRectangle() {
@@ -94,7 +127,7 @@ export class CanvasGridComponent implements OnInit {
     this.shapes.push(rectangle);
     this.layer.add(rectangle);
     this.stage.add(this.layer);
-    this.addTransformerListeners()
+    this.addTransformerListeners(rectangle);
   }
 
   addLine() {
@@ -131,6 +164,10 @@ export class CanvasGridComponent implements OnInit {
     });
   }
 
+  helloWorld() {
+    alert('Hello world!');
+  }
+
   undo() {
     const removedShape = this.shapes.pop();
     this.transformers.forEach(t => {
@@ -142,9 +179,15 @@ export class CanvasGridComponent implements OnInit {
     this.layer.draw();
   }
 
-  addTransformerListeners() {
-    const component = this;
-    const tr = new Konva.Transformer();
+  addTransformer() {
+    this.layer.add(this.selectionRectangle);
+    this.layer.add(this.transformer);
+  }
+
+  addTransformerListeners(shape: any) {
+
+
+    this.transformer.nodes([shape]);
     // this.stage.on('click', function (e) {
     //   if (!this.clickStartShape) {
     //     return;
@@ -162,55 +205,55 @@ export class CanvasGridComponent implements OnInit {
     //   }
     // });
 
-    let x1: any, y1: any, x2: any, y2: any;
-    this.stage.on('mousedown touchstart', (e) => {
-      // do nothing if we mousedown on any shape
-      if (e.target !== this.stage) {
-        return;
-      }
-      x1 = this.stage.getPointerPosition()?.x;
-      y1 = this.stage.getPointerPosition()?.y;
-      x2 = this.stage.getPointerPosition()?.x;
-      y2 = this.stage.getPointerPosition()?.y;
+    // let x1: any, y1: any, x2: any, y2: any;
+    // this.stage.on('mousedown touchstart', (e) => {
+    //   // do nothing if we mousedown on any shape
+    //   if (e.target !== this.stage) {
+    //     return;
+    //   }
+    //   x1 = this.stage.getPointerPosition()?.x;
+    //   y1 = this.stage.getPointerPosition()?.y;
+    //   x2 = this.stage.getPointerPosition()?.x;
+    //   y2 = this.stage.getPointerPosition()?.y;
 
-      this.selectionRectangle.visible(true);
-      this.selectionRectangle.width(0);
-      this.selectionRectangle.height(0);
-    });
+    //   this.selectionRectangle.visible(true);
+    //   this.selectionRectangle.width(0);
+    //   this.selectionRectangle.height(0);
+    // });
 
-    this.stage.on('mousemove touchmove', () => {
-      // no nothing if we didn't start selection
-      if (!this.selectionRectangle.visible()) {
-        return;
-      }
-      x2 = this.stage.getPointerPosition()?.x;
-      y2 = this.stage.getPointerPosition()?.y;
+    // this.stage.on('mousemove touchmove', () => {
+    //   // no nothing if we didn't start selection
+    //   if (!this.selectionRectangle.visible()) {
+    //     return;
+    //   }
+    //   x2 = this.stage.getPointerPosition()?.x;
+    //   y2 = this.stage.getPointerPosition()?.y;
 
-      this.selectionRectangle.setAttrs({
-        x: Math.min(x1, x2),
-        y: Math.min(y1, y2),
-        width: Math.abs(x2 - x1),
-        height: Math.abs(y2 - y1),
-      });
-    });
+    //   this.selectionRectangle.setAttrs({
+    //     x: Math.min(x1, x2),
+    //     y: Math.min(y1, y2),
+    //     width: Math.abs(x2 - x1),
+    //     height: Math.abs(y2 - y1),
+    //   });
+    // });
 
-    this.stage.on('mouseup touchend', () => {
-      // no nothing if we didn't start selection
-      if (!this.selectionRectangle.visible()) {
-        return;
-      }
-      // update visibility in timeout, so we can check it in click event
-      setTimeout(() => {
-        this.selectionRectangle.visible(false);
-      });
+    // this.stage.on('mouseup touchend', () => {
+    //   // no nothing if we didn't start selection
+    //   if (!this.selectionRectangle.visible()) {
+    //     return;
+    //   }
+    //   // update visibility in timeout, so we can check it in click event
+    //   setTimeout(() => {
+    //     this.selectionRectangle.visible(false);
+    //   });
 
-      var shapes = this.stage.find('.rect');
-      var box = this.selectionRectangle.getClientRect();
-      var selected = shapes.filter((shape) =>
-        Konva.Util.haveIntersection(box, shape.getClientRect())
-      );
-      tr.nodes(selected);
-    });
+    //   var shapes = this.stage.find('.rect');
+    //   var box = this.selectionRectangle.getClientRect();
+    //   var selected = shapes.filter((shape) =>
+    //     Konva.Util.haveIntersection(box, shape.getClientRect())
+    //   );
+    //   this.transformer.nodes(selected);
+    // });
 
     // clicks should select/deselect shapes
     this.stage.on('click tap', (e) => {
@@ -221,34 +264,38 @@ export class CanvasGridComponent implements OnInit {
 
       // if click on empty area - remove all selections
       if (e.target === this.stage) {
-        tr.nodes([]);
+        this.transformer.nodes([]);
+        this.properties = false;
+
         return;
       }
 
-      // do nothing if clicked NOT on our rectangles
-      if (!e.target.hasName('rect')) {
-        return;
-      }
+      // // do nothing if clicked NOT on our rectangles
+      // if (!e.target.hasName('rect')) {
+      //   return;
+      // }
 
       // do we pressed shift or ctrl?
       const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
-      const isSelected = tr.nodes().indexOf(e.target) >= 0;
+      const isSelected = this.transformer.nodes().indexOf(e.target) >= 0;
 
       if (!metaPressed && !isSelected) {
         // if no key pressed and the node is not selected
         // select just one
-        tr.nodes([e.target]);
+        let selectedShape = e.target;
+        this.transformer.nodes([selectedShape]);
+        this.displayProperties(selectedShape);
       } else if (metaPressed && isSelected) {
         // if we pressed keys and node was selected
         // we need to remove it from selection:
-        const nodes = tr.nodes().slice(); // use slice to have new copy of array
+        const nodes = this.transformer.nodes().slice(); // use slice to have new copy of array
         // remove node from array
         nodes.splice(nodes.indexOf(e.target), 1);
-        tr.nodes(nodes);
+        this.transformer.nodes(nodes);
       } else if (metaPressed && !isSelected) {
         // add the node into selection
-        const nodes = tr.nodes().concat([e.target]);
-        tr.nodes(nodes);
+        const nodes = this.transformer.nodes().concat([e.target]);
+        this.transformer.nodes(nodes);
       }
     });
   }
@@ -267,6 +314,11 @@ export class CanvasGridComponent implements OnInit {
       }
       component.layer.batchDraw();
     });
+  }
+
+  displayProperties(selectedShape: any) {
+    this.properties = true;
+    this.selectedShape = selectedShape;
   }
 
   clearBoard() {

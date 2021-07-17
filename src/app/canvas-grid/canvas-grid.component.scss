@@ -1,0 +1,39 @@
+
+.with-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s1);
+}
+
+.sidebar {
+  flex-grow: 1;
+  flex-basis: 65px;
+}
+
+.internal-sidebar
+{
+  flex-grow: 1;
+  flex-basis: 85px;
+  .draw
+  {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.not-sidebar {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: 50%;
+}
+
+.shape-right-panel
+{
+  position: absolute;
+  z-index: 1;
+  border: 1px red solid;
+  width: 200px;
+  height: 500px;
+  right: 28px;
+  top: 44px;
+}

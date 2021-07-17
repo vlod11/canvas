@@ -11,6 +11,7 @@ export class ShapeService {
 
   circle() {
     return new Konva.Circle({
+      name: "circle",
       x: 100,
       y: 100,
       radius: 70,
@@ -33,6 +34,7 @@ export class ShapeService {
 
   rectangle() {
     return new Konva.Rect({
+      name: "rect",
       x: 20,
       y: 20,
       width: 100,
@@ -41,5 +43,23 @@ export class ShapeService {
       strokeWidth: 2,
       draggable: true
     });
+  }
+
+  image() {
+    var imageObj = new Image();
+
+    imageObj.src = '/assets/green-jobs.png';
+
+    var image = new Konva.Image({
+      name: "image",
+      x: 50,
+      y: 50,
+      image: imageObj,
+      width: 106,
+      height: 118,
+      draggable: true
+    });
+
+    return image;
   }
 }

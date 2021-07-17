@@ -1,10 +1,44 @@
-<div class="row">
-  <button  (click)='setSelection("circle"); addShape("circle")'>Circle</button>
-  <button (click)='setSelection("rectangle"); addShape("rectangle")'>Rectangle</button>
-  <button (click)='setSelection("line"); addShape("line"); erase = false'>Pen</button>
-  <button (click)='setSelection("text"); addShape("text")'>Text</button>
-  <button (click)='clearSelection(); setSelection("undo"); undo()'>Undo</button>
-  <button (click)='clearSelection(); setSelection("erase"); erase = true'>Erase</button>
-  <button (click)='clearBoard()'>Clear</button>
+<div class="with-sidebar">
+  <div class="sidebar">
+    <div *ngFor="let menuItem of menuItems">
+      <div class="sidebar-item">
+        <button (click)='setSelectedMenuItem(menuItem)'>{{menuItem.name}}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="internal-sidebar">
+    <div *ngIf="selectedMenuItem?.name === 'Draw'" class="draw">
+      <button (click)='setSelection("circle"); addShape("circle")'>Circle</button>
+      <button (click)='setSelection("rectangle"); addShape("rectangle")'>Rectangle</button>
+      <button (click)='setSelection("line"); addShape("line"); erase = false'>Pen</button>
+      <button (click)='setSelection("text"); addShape("text")'>Text</button>
+      <button (click)='setSelection("image"); addShape("image")'>Image</button>
+      <button (click)='clearSelection(); setSelection("undo"); undo()'>Undo</button>
+      <button (click)='clearSelection(); setSelection("erase"); erase = true'>Erase</button>
+      <button (click)='clearBoard()'>Clear</button>
+    </div>
+
+    <div *ngIf="selectedMenuItem?.name === 'Elements'" class="elements">
+      <div *ngFor="let shape of shapes">
+        {{shape.name()}}
+      </div>
+    </div>
+  </div>
+
+  <div class="not-sidebar">
+    <div id="container"></div>
+    <div *ngIf="properties"
+      class="shape-right-panel">
+      <div>
+        Name {{selectedShape.name()}}
+      </div>
+      <div>
+        X {{selectedShape.x()}}
+      </div>
+      <div>
+        Y {{selectedShape.y()}}
+      </div>
+    </div>
+  </div>
 </div>
-<div id="container"></div>
