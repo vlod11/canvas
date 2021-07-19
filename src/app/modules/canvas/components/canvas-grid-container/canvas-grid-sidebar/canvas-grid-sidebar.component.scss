@@ -1,4 +1,3 @@
-
 .with-sidebar {
   display: flex;
   flex-wrap: wrap;
@@ -7,13 +6,19 @@
 
 .sidebar {
   flex-grow: 1;
-  flex-basis: 65px;
+  flex-basis: 75px;
+  width: 85px;
+
+  background-color: yellow;
 }
 
 .internal-sidebar
 {
   flex-grow: 1;
   flex-basis: 85px;
+  width: 85px;
+  background-color: wheat;
+
   .draw
   {
     display: flex;
@@ -25,15 +30,4 @@
   flex-basis: 0;
   flex-grow: 999;
   min-width: 50%;
-}
-
-.shape-right-panel
-{
-  position: absolute;
-  z-index: 1;
-  border: 1px red solid;
-  width: 200px;
-  height: 500px;
-  right: 28px;
-  top: 44px;
 }

@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~11.2.14",
     "@angular/platform-browser-dynamic": "~11.2.14",
     "@angular/router": "~11.2.14",
+    "@ngrx/store": "^12.2.0",
     "devextreme": "21.1.4",
     "devextreme-angular": "21.1.4",
     "konva": "^8.1.1",

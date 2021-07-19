@@ -7,11 +7,13 @@ import Konva from 'konva';
 })
 export class ShapeService {
 
+  counter: number = 1;
+
   constructor() { }
 
   circle() {
     return new Konva.Circle({
-      name: "circle",
+      name: "circle" + this.counter++,
       x: 100,
       y: 100,
       radius: 70,
@@ -34,7 +36,7 @@ export class ShapeService {
 
   rectangle() {
     return new Konva.Rect({
-      name: "rect",
+      name: "rect" ,
       x: 20,
       y: 20,
       width: 100,

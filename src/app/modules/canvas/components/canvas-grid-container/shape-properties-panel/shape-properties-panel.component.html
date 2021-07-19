@@ -1,0 +1,14 @@
+<div class="shape-right-panel">
+  <div>
+    Name {{selectedShapeElement?.name}}
+  </div>
+  <div>
+    X {{selectedShapeElement?.x}}
+  </div>
+  <div>
+    Y {{selectedShapeElement?.y}}
+  </div>
+  <div *ngFor="let item of selectedShapeElement?.states">
+    <div>{{item.name + " " + item.x + " " + item.y}}</div>
+  </div>
+</div>

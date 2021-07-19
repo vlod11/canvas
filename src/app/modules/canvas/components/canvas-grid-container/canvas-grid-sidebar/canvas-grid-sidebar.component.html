@@ -1,0 +1,19 @@
+<div class="with-sidebar">
+  <div class="sidebar">
+    <button (click)='addShape("circle")'>Circle</button>
+    <button (click)='addShape("rectangle")'>Rectangle</button>
+    <button (click)='addShape("text")'>Text</button>
+    <button (click)='addShape("image")'>Image</button>
+  </div>
+
+  <div class="internal-sidebar">
+    <div *ngFor="let shape of shapeElements$ | async">
+      {{shape.name + " " + shape.x}}
+    </div>
+  </div>
+
+  <div class="not-sidebar">
+    <ng-content></ng-content>
+    <app-canvas-grid></app-canvas-grid>
+  </div>
+</div>

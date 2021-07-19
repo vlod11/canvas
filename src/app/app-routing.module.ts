@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CanvasGridComponent } from 'src/app/canvas-grid/canvas-grid.component';
+import { CanvasGridSidebarComponent } from 'src/app/modules/canvas/components/canvas-grid-container/canvas-grid-sidebar/canvas-grid-sidebar.component';
 
 const routes: Routes = [
-  { path: '', component: CanvasGridComponent },
-  { path: '**', component: CanvasGridComponent }
+  { path: '', component: CanvasGridSidebarComponent },
+  { path: '**', component: CanvasGridSidebarComponent }
 ];
 
 @NgModule({
