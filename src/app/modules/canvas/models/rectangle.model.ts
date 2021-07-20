@@ -1,7 +1,8 @@
 import { CanvasElementState } from 'src/app/modules/canvas/models/interfaces/canvas-element-state';
 import { CanvasElement } from 'src/app/modules/canvas/models/interfaces/canvas-elements';
 
-export class Circle implements CanvasElement {
+export class Rectangle implements CanvasElement {
+  id: string;
   name: string;
   x: number;
   y: number;
@@ -15,7 +16,8 @@ export class Circle implements CanvasElement {
     })
   };
 
-  constructor(name: string, x: number, y: number) {
+  constructor(id: string, name: string, x: number, y: number) {
+    this.id = id
     this.name = name;
     this.x = x;
     this.y = y;

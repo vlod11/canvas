@@ -1,10 +1,10 @@
 
 import { Injectable } from '@angular/core';
 import Konva from 'konva';
-import { Circle } from 'src/app/modules/canvas/models/circle';
-import { CanvasImage } from 'src/app/modules/canvas/models/image';
-import { Rectangle } from 'src/app/modules/canvas/models/rectangle';
-import { CanvasText } from 'src/app/modules/canvas/models/text';
+import { Circle } from 'src/app/modules/canvas/models/circle.model';
+import { CanvasImage } from 'src/app/modules/canvas/models/image.model';
+import { Rectangle } from 'src/app/modules/canvas/models/rectangle.model';
+import { CanvasText } from 'src/app/modules/canvas/models/text.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,25 +15,16 @@ export class KonvaJsElementToShapeMapper {
 
   getCircle(element: Konva.Circle) {
     return new Circle(
+      element.id(),
       element.name(),
       element.x(),
       element.y()
     );
   }
 
-  line(pos: any, mode: string = 'brush') {
-    return new Konva.Line({
-      stroke: 'red',
-      strokeWidth: 2,
-      globalCompositeOperation:
-        mode === 'brush' ? 'source-over' : 'destination-out',
-      points: [pos.x, pos.y],
-      draggable: false
-    });
-  }
-
   getRectangle(element: Konva.Rect) {
     return new Rectangle(
+      element.id(),
       element.name(),
       element.x(),
       element.y()
@@ -50,6 +41,7 @@ export class KonvaJsElementToShapeMapper {
 
   getText(element: Konva.Text) {
     return new CanvasText(
+      element.id(),
       element.name(),
       element.x(),
       element.y()

@@ -5,14 +5,14 @@ import Konva from 'konva';
 @Injectable({
   providedIn: 'root'
 })
-export class ShapeService {
-
+export class KonvaShapesFactoryService {
   counter: number = 1;
 
   constructor() { }
 
   circle() {
     return new Konva.Circle({
+      id: String(this.counter),
       name: "circle" + this.counter++,
       x: 100,
       y: 100,
@@ -23,19 +23,9 @@ export class ShapeService {
     });
   }
 
-  line(pos: any, mode: string = 'brush') {
-    return new Konva.Line({
-      stroke: 'red',
-      strokeWidth: 2,
-      globalCompositeOperation:
-        mode === 'brush' ? 'source-over' : 'destination-out',
-      points: [pos.x, pos.y],
-      draggable: false
-    });
-  }
-
   rectangle() {
     return new Konva.Rect({
+      id: String(this.counter),
       name: "rect" ,
       x: 20,
       y: 20,
@@ -53,6 +43,7 @@ export class ShapeService {
     imageObj.src = '/assets/green-jobs.png';
 
     var image = new Konva.Image({
+      id: String(this.counter),
       name: "image",
       x: 50,
       y: 50,

@@ -2,6 +2,7 @@ import { CanvasElementState } from 'src/app/modules/canvas/models/interfaces/can
 import { CanvasElement } from 'src/app/modules/canvas/models/interfaces/canvas-elements';
 
 export class CanvasImage implements CanvasElement {
+  id!: string;
   name: string;
   x: number;
   y: number;

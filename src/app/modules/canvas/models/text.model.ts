@@ -1,6 +1,8 @@
-import { CanvasElement, CanvasElementState } from 'src/app/modules/canvas/models/interfaces/canvas-elements';
+import { CanvasElementState } from 'src/app/modules/canvas/models/interfaces/canvas-element-state';
+import { CanvasElement } from 'src/app/modules/canvas/models/interfaces/canvas-elements';
 
 export class CanvasText implements CanvasElement {
+  id: string;
   name: string;
   x: number;
   y: number;
@@ -14,7 +16,8 @@ export class CanvasText implements CanvasElement {
     })
   };
 
-  constructor(name: string, x: number, y: number) {
+  constructor(id: string, name: string, x: number, y: number) {
+    this.id = id;
     this.name = name;
     this.x = x;
     this.y = y;

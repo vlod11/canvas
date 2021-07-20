@@ -5,11 +5,13 @@ import Konva from 'konva';
   providedIn: 'root'
 })
 export class TextNodeService {
+  counter: number = 1;
 
   constructor() { }
 
   textNode(stage: Konva.Stage, layer: Konva.Layer) {
     const textNode = new Konva.Text({
+      id: "text" + this.counter, //TODO: one global variable
       text: 'type here',
       x: 50,
       y: 80,
